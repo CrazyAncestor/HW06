@@ -1,5 +1,5 @@
 #include "classes.h"
-double abs(double a) {
+double absolute(double a) {
     if (a <= 0)return -a;
     return a;
 }
@@ -33,7 +33,7 @@ void matrix::Error_Message(const matrix &b){
     double ave = 0;
     for(int i=0;i<dim;i++){
         for(int j=0;j<dim;j++){
-            sum+=abs(this->value[i][j]-b.value[i][j])/ b.value[i][j];
+            sum+=absolute(this->value[i][j]-b.value[i][j])/ b.value[i][j];
             //ave+=b.value[i][j];
         }
         
@@ -45,7 +45,7 @@ double matrix::Error(const matrix& b) {
     double ave = 0;
     for (int i = 0; i < dim; i++) {
         for (int j = 0; j < dim; j++) {
-            sum += abs(this->value[i][j] - b.value[i][j]) / b.value[i][j];
+            sum += absolute(this->value[i][j] - b.value[i][j]) / b.value[i][j];
             //ave+=b.value[i][j];
         }
 

@@ -49,7 +49,7 @@ matrix V_Cycle(matrix phi,matrix dens){
 
 int main()
 {
-    int N = 100;
+    int N = 400;
     double h = PI / (N - 1);
     double time_ref = 0;
     cout << "2D Array Size:" << N << endl;
@@ -67,7 +67,7 @@ int main()
 
 
 
-        pot.SOR_smoothing(dens, ans, 1.9, 1e-3, i);
+        pot.SOR_smoothing(dens, ans, 1.9, 1e-6, i);
 
         gettimeofday(&end, NULL);
         double time_use = (end.tv_sec - start.tv_sec) + (double)(end.tv_usec - start.tv_usec) / 1000000.0;
