@@ -10,7 +10,7 @@
 using namespace std;
 
 #define PI 3.14159265359
-#define d0 10.0
+#define d0 10.0 //background density
 
 class matrix
 { 

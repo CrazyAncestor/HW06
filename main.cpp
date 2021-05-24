@@ -3,7 +3,7 @@
 double f(double x,double y){
   return sin(x)*sin(y)+d0;
 }
-void solved(matrix &m){
+void solved(matrix &m){ //analytical solution 
   int dim = m.get_dim();
   for(int i=0;i<dim;i++){
         for(int j=0;j<dim;j++){
@@ -16,41 +16,10 @@ void solved(matrix &m){
     }
 }
 
-matrix V_Cycle(matrix phi,matrix dens){
-
-	// Pre-Smoothing
-	phi.SOR_smoothing(dens,1.7,3);
-	
-	// Compute Residual Errors
-	matrix r = phi.Residual(dens);
-	
-	// Restriction
-	matrix rhs = r.Restriction();
-
-	matrix eps(rhs.get_dim(),rhs.get_h());
-  
-	// stop recursion at smallest grid size, otherwise continue recursion
-	if (rhs.get_dim()<=5){
-    matrix dens2 = dens.Restriction();
-    eps.SOR_smoothing(dens2,1.7,100);
-  }
-        	
-	else {
-    eps = V_Cycle(eps,rhs);  
-  }       
-
-	// Prolongation and Correction
-	phi = phi + eps.Interpolation(phi.get_dim());
-	
-  // Post-Smoothing
-	phi.SOR_smoothing(dens,1.7,3); 
-  return phi;
-}
-
 int main()
 {
-    int N = 400;
-    double h = PI / (N - 1);
+    int N = 400; //array size
+    double h = PI / (N - 1); //cell size
     double time_ref = 0;
     cout << "2D Array Size:" << N << endl;
     for (int i = 1; i < 9; i++) {
@@ -76,7 +45,6 @@ int main()
             time_ref = time_use;
         }
         else cout << "number of threads:" << i << "  ,performance:" << time_ref/time_use << endl;
-        //pot.Error_Message(ans);
     }
 }
   

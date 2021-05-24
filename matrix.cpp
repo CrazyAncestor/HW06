@@ -34,7 +34,6 @@ void matrix::Error_Message(const matrix &b){
     for(int i=0;i<dim;i++){
         for(int j=0;j<dim;j++){
             sum+=absolute(this->value[i][j]-b.value[i][j])/ b.value[i][j];
-            //ave+=b.value[i][j];
         }
         
     }
@@ -46,7 +45,6 @@ double matrix::Error(const matrix& b) {
     for (int i = 0; i < dim; i++) {
         for (int j = 0; j < dim; j++) {
             sum += absolute(this->value[i][j] - b.value[i][j]) / b.value[i][j];
-            //ave+=b.value[i][j];
         }
 
     }
@@ -58,10 +56,10 @@ void matrix::SOR_smoothing(const matrix &rho,double omega,int steps){
 #  pragma omp parallel 
             {
                 const int tid = omp_get_thread_num();
-                
+            //odd-even ordering
 #     pragma omp for collapse(2)
                     for (int i = 0; i < dim; i++) {
-                        for (int j = 0; j < dim; j++) {
+                        for (int j = 0; j < dim; j++) {//even number cells
                             if ((i + j) % 2 == 0) {
                                 if (i != 0 && i != dim - 1 && j != 0 && j != dim - 1) {
                                     this->value[i][j] += omega * 0.25 * (this->value[i + 1][j] + this->value[i - 1][j] + this->value[i][j + 1] + this->value[i][j - 1] - this->value[i][j] * 4 - h * h * rho.value[i][j]);
@@ -72,7 +70,7 @@ void matrix::SOR_smoothing(const matrix &rho,double omega,int steps){
                 
 #     pragma omp barrier
 #     pragma omp for collapse(2)
-                    for (int i = 0; i < dim; i++) {
+                    for (int i = 0; i < dim; i++) {//odd number cells
                         for (int j = 0; j < dim; j++) {
                             if ((i + j) % 2 == 1) {
                                 if (i != 0 && i != dim - 1 && j != 0 && j != dim - 1) {
